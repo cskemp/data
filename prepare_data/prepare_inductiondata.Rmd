@@ -141,78 +141,12 @@ all_participants <- map2_df(files$filename, files$participant_id, read_chimera_i
 all_participants_release <- all_participants %>% 
   select(-conclusion) %>% 
   right_join(d_chimera, by = "argument") %>% 
-  mutate(condition = recode(condition, "1" = "both_premises", "2" = "premise_1", "3" = "premise_2"))
-  
+  mutate(condition = recode(condition, "1" = "both_premises", "2" = "premise_1", "3" = "premise_2")) %>% 
+  select(argument,participant,premise_1,premise_2,conclusion,rating,condition,edge_qn,conflict_qn)
+
 mean_data <- all_participants_release %>% 
   group_by(argument, premise_1, premise_2, conclusion, condition) %>% 
   summarize(human_rating = mean(rating))
 
 write_csv(all_participants_release, here("data_release", "data_chimeras.csv"))
 ```
-
-
-GRAVEYARD: made a plot to compare the average results for the both_premise condition with the average results in `here("data_old", "chimera_exptresults.csv"))`. The two sets of results are fairly close but not identical -- not sure why. Perhaps the averages in `chimera_exptresults.csv` were based on a near-final (but not final) version of the data set.
-
-```{r chimeras, message=FALSE, eval = FALSE}
-
-stim <- readMat(here("data_old", "chimeraexpt_adjadjpairs.mat"))
-
-features <- unlist(stim$features)
-objects <- unlist(stim$objects)
-args <-  as_tibble(stim$chosenpairs, .name_repair = "universal")
-colnames(args) = c("premise_1", "premise_2")
-singlemap <- as_tibble(stim$singlemap, .name_repair = "universal")
-colnames(singlemap) = c("sm_premise_1", "sm_premise_2")
-singlemap <- singlemap %>% 
-  rowid_to_column(var="prempairid") 
-
-d_chimera <- read_csv(here("data_old", "chimera_exptresults.csv")) %>% 
-  clean_names() %>% 
-  select(-sum_model_max_1) %>% 
-  rename(human_rating = human_max_7, conclusion = test_feature ) %>% 
-  rowid_to_column(var="argument") %>% 
-  mutate(prempairid = argument  %/% 10 + 1) %>% 
-  left_join(singlemap, by = c("prempairid")) %>% 
-  mutate()
-
-dict_old <- 1:57
-dict_new <- features
-dict <- setNames(dict_new, dict_old)
-args <- args %>% 
-  mutate(premise_1 = recode(premise_1, !!!dict), premise_2 = recode(premise_2, !!!dict))
-
-d_mat <- readMat(here("data_old", "chimeras_exptdata.mat"))
-  
-conclusions= c("c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10")
-
-d1 <- as_tibble(matrix(unlist(d_mat$humavg[[1]]), 40), ..name_repair = "universal") %>% 
-  rowid_to_column(var="argument") %>% 
-  pivot_longer(V1:V10, names_to = "conclusion", values_to = "hh") %>% 
-  mutate(condition = "both_premises")
-
-d2 <- as_tibble(matrix(unlist(d_mat$humavg[[2]]), 40), ..name_repair = "universal") %>% 
-  rowid_to_column(var="argument") %>% 
-  pivot_longer(V1:V10, names_to = "conclusion", values_to = "hh") %>% 
-  mutate(condition = "premise_1")
-
-d3 <- as_tibble(matrix(unlist(d_mat$humavg[[3]]), 40), ..name_repair = "universal") %>% 
-  rowid_to_column(var="argument") %>% 
-  pivot_longer(V1:V10, names_to = "conclusion", values_to = "hh") %>% 
-  mutate(condition = "premise_2")
-  
-#  unlist("...1") 
-#d_c2 <- d_mat$humavg[2]
-#d_c3 <- d_mat$humavg[3]
-
-bt <- bind_cols(d_chimera, d1)
-
-comparevals <- bt %>% 
-  ggplot(aes(x=human_rating, y = hh)) +
-  geom_point()
-
-comparevals  
-```
-
-
-
-
