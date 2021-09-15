@@ -1,0 +1,41 @@
+Data sets from papers related to inductive reasoning
+
+1) Kemp, Charles, and Joshua B. Tenenbaum (2009) "Structured statistical models of inductive reasoning." Psychological Review 116(1): 20 - 58
+
+Figure 7: Osherson horse, Osherson mammals
+
+See http://www.charleskemp.com/code/structstatmodels.html
+
+Figure 9: Minneapolis, Houston, All cities
+
+See http://www.charleskemp.com/code/structstatmodels.html
+
+Figure 15: Disease (island), Disease (mammals), Gene (island), Gene (mammals)
+
+data_islandfoodwebarguments.csv
+data_mammalsfoodwebarguments.csv
+
+Other datasets in Figures 7 and 11 can be found in the sources cited in the paper.
+
+2) Kemp, C. & Tenenbaum, J. B. (2003). Theory-based induction. Proceedings of the 25th Annual Conference of the Cognitive Science Society.
+
+The data from the Sanjana and Tenenbaum (2003) are in
+
+data_sanjana.csv
+
+Osherson et al data are available from Osherson, D., Smith, E. E., Wilkie, O., Lopez, A., and
+Shafir, E. (1990). Category-based induction. Psychological Review, 97(2):185–200.
+
+3) Kemp, Charles. "Inductive reasoning about chimeric creatures." Advances in Neural Information Processing Systems 24 (2011): 316-324.
+
+data_chimeras.csv
+
+This file includes results for 48 participants:
+    argument: identifier of an argument (1 through 40). Each argument is a triple [premise_1, premise_2, conclusion])
+    participant: participant identifier (1 through 48)
+    rating: participant's rating on a scale from 1 to 7
+    condition: both_premises corresponds to Experiment 1 in the paper. premise_1 (ie a one-premise argument with premise_1 as the premise) and premise_2 (one-premise argument with premise_2 as the premise) are reported as Experiment 2 in the paper.
+    edge_qn: is the argument an edge case? (see p 6 of paper for definition)
+    conflict_qn: is the argument a conflict case?
+
+
